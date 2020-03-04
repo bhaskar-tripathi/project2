@@ -1,26 +1,47 @@
-<p>&nbsp;</p>
-<p><span style="color: #993300;"><img style="display: block; margin-left: auto; margin-right: auto;"
-            src="https://cdn.exoticindia.com/details/books-2017/nzk648.jpg" alt="Surya Siddhant" width="225"
-            height="284" /></span></p>
-<table style="height: 105px; border-collapse: collapse;" width="562">
-    <tbody>
-        <tr style="height: 31.1667px;">
-            <td style="width: 552.667px; height: 31.1667px; text-align: center;"><img
-                    src="https://cdn.dribbble.com/users/411234/screenshots/2427834/star.png" alt="Image result for star"
-                    width="53" height="40" /><img
-                    src="https://cdn.dribbble.com/users/411234/screenshots/2427834/star.png" alt="Image result for star"
-                    width="53" height="40" /><img
-                    src="https://cdn.dribbble.com/users/411234/screenshots/2427834/star.png" alt="Image result for star"
-                    width="53" height="40" /><img
-                    src="https://cdn.dribbble.com/users/411234/screenshots/2427834/star.png" alt="Image result for star"
-                    width="53" height="40" /><img
-                    src="https://cdn.dribbble.com/users/411234/screenshots/2427834/star.png" alt="Image result for star"
-                    width="53" height="40" /></td>
-        </tr>
-    </tbody>
-</table>
-<p style="text-align: center; width: 30%; display: block; margin-left: auto; margin-right: auto; "><strong>The Surya
-        Siddhanta is the name of a Sanskrit treatise in Indian astronomy
-        from the late 4th-century or early 5th-century CE. The text survives in several versions, was cited and
-        extensively quoted in a 6th-century CE text by Varahamihira, was likely revised for several centuries under the
-        same title.&nbsp;</strong></p>
+<tbody>
+
+    <div class="jumbotron jumbotron-fluid bg-warning">
+        <div class="container">
+            <h1 class="display-4 text-bold">ROUND TABLE</h1>
+            <p class="lead">WELCOME TO ROUND TABLE TO SEARCH BOOK'S COMMENTS</p>
+        </div>
+    </div>
+
+
+
+    <div class="container">
+        <div class="input-group mb-3" style=" margin-bottom: 20px;">
+            <input type="text" class="form-control" placeholder="Type Book Title" aria-label="Recipient's username"
+                aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary bg-primary text-white" type="button"
+                    id="button-addon2">Search</button>
+            </div>
+        </div>
+
+
+        {{#each book}}
+        <ul>
+            <li>
+                <div class="row mb-4">
+                <div class="card col-sm-3" style=" height: 500px;">
+                <img src="{{imagelink}}" class="card-img-top" height="300px" alt="bookimage">
+                    <div class="card-body">
+                        <h5 class="card-title">{{title}}</h5>
+                        <p class="card-text">{{subtitle}}</p>
+                        <button class="mybutton" DATA-ID={{addsql}}>ADD</button>
+                        <button class="mybutton" DATA-ID={{openDetailPage}}>OPEN</button>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        {{/each}}
+
+
+
+        </div>
+
+    </div>
+
+
+</tbody>
