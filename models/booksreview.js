@@ -2,18 +2,24 @@
 /* eslint-disable semi */
 module.exports = function(sequelize, DataTypes) {
   var Reviews = sequelize.define('Reviews', {
-    title: {
+    pName: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
         len: [1]
       }
     },
-    body: {
+    comments: {
       type: DataTypes.TEXT,
       allowNull: false,
       len: [1]
-    }
+    },
+    rating: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      }
+    
+    
   });
 
   Reviews.associate = function(models) {
