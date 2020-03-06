@@ -1,50 +1,111 @@
-var express = require('express')
+/* eslint-disable semi */
+var express = require('express');
+var axios = require('axios');
+// var Sequelize = require('sequelize');
+var apiKey = 'AIzaSyCeM1m73twcAewk29CbTe4IJIIc4U1hQkQ';
 
-var router = express.Router()
+var router = express.Router();
 
-// Import the model (booksreview.js) to use its database functions.
-// var br = require('../models/booksreview.js')
+var volumeId;
+
+// Import the model (booksreview.js and Book.js) to use its database functions.
+var db = require('../models');
 
 // Create all our routes and set up logic within those routes where required.
+
+// Route for homepage
 router.get('/', function (req, res) {
-//   br.selectAll(function(data) {
-//     var hbsObject = {
-//       burgers: data
-//     };
-//     console.log(hbsObject);
-//     res.render('index', hbsObject);
-//   });
-  res.render('index')
-})
+  // db.Book.findAll({ order: [Sequelize.fn('max', Sequelize.col('rating'))], limit: 6 }).then(function (Books) {
+  // db.Book.findAll({ limit: 6 }).then(function (Books) {
+  //   // var queries = [];
+  //   const urlArray = [];
+  //   // console.log(Books);
+  //   for (var i = 0; i < Books.length; i++) {
+  //     // queries.push(axios.get(`https://www.googleapis.com/books/v1/volumes/${Books[i].dataValues.volume_id}`));
+  //     urlArray.push(`https://www.googleapis.com/books/v1/volumes/${Books[i].dataValues.volume_id}`);
+  //   };
+  //   const promiseArray = urlArray.map(url => axios.get(url));
+  //   console.log(promiseArray.toString());
+  //   axios.all([
+  //     promiseArray
+  //   ])
+  //     .then(apiresult => {
+  //       var book = [];
+  //       // if (Object.entries(res1).length !== 0) { console.log(res1); book.push(res1.data) };
+  //       // if (Object.entries(res2).length !== 0) { console.log(res2); book.push(res2.data) };
+  //       // if (Object.entries(res3).length !== 0) { console.log(res3); book.push(res3.data) };
+  //       // if (Object.entries(res4).length !== 0) { console.log(res4); book.push(res4.data) };
+  //       // if (Object.entries(res5).length !== 0) { console.log(res5); book.push(res5.data) };
+  //       // if (Object.entries(res6).length !== 0) { console.log(res6); book.push(res6.data) };
+  //       console.log(apiresult);
+  //       res.render('index', { book: apiresult })
+  //     });
+  // });
+  res.render('index');
+});
 
-router.get('/api/comments', function (req, res) {
-//   br.createOne([
-//     'burger_name', 'devoured'
-//   ], [
-//     req.body.name, false
-//   ], function (result) {
-//     // Send back the ID of the new quote
-//     res.json({ id: result.insertId })
-//   })
-  res.render('detail')
-})
+// Route for homepage with Search result
+router.get('/api/search/:searchText', function (req, res) {
+  var searchText = req.params.searchText;
+  var queryUrl = `https://content.googleapis.com/books/v1/volumes?maxResults=6&q=${searchText}&key=${apiKey}`;
+  axios.get(queryUrl).then(apiResponse => {
+    console.log(apiResponse.data.items[0].volumeInfo);
+    res.render('index', { book: apiResponse.data.items });
+  }
+  );
+});
 
-router.post('/api/comments/:isbn', function (req, res) {
-//   var condition = 'id = ' + req.params.id
+// Get comments for a given volume
+router.get('/api/comments/:volumeId', function (req, res) {
+  volumeId = req.params.volumeId;
+  db.Reviews.findAll({ where: { bookid: volumeId } }).then(function (reviewData) {
+    res.json(reviewData);
+  });
+});
 
-  //   console.log('condition', condition)
+// Get details page including comments
+router.get('/details/:volumeId', function (req, res) {
+  volumeId = req.params.volumeId;
+  var queryUrl = `https://www.googleapis.com/books/v1/volumes/${volumeId}`;
+  axios.get(queryUrl).then(apiResponse => {
+    db.Reviews.findAll({ where: { bookid: volumeId } }).then(function (reviewData) {
+      var hbsObject = {
+        leInfo: apiResponse.data,
+        reviews: reviewData
+      };
+      console.log(hbsObject);
+      // res.render('detail', hbsObject);
+      res.render('2ndPageBookTemplate', hbsObject)
+    });
+  }
+  );
+});
 
-//   br.updateOne({
-//     devoured: req.body.devoured
-//   }, condition, function (result) {
-//     if (result.changedRows === 0) {
-//       // If no rows were changed, then the ID must not exist, so 404
-//       return res.status(404).end()
-//     } else {
-//       res.status(200).end()
-//     }
-//   })
-})
+// Post comments
+router.post('/api/comments/:volumeId', function (req, res) {
+  volumeId = req.params.volumeId;
+  // Update the new review comment in DB
+  db.Reviews.create({ bookid: volumeId, comment: req.body.comment, rname: req.body.name, rating: req.body.rating })
+    .then(([updbookreview, created]) => {
+      // if successfully created, reload the page
+      if (created) {
+        res.redirect(req.get('referer'));
+      }
+    })
+});
+
+// Post book
+router.post('/api/book/:volumeId', function (req, res) {
+  volumeId = req.params.volumeId;
+  // Update the new review comment in DB
+  db.Reviews.create({ bookid: volumeId, comment: req.body.comment, rname: req.body.name, rating: req.body.rating })
+    .then(([updbookreview, created]) => {
+      // if successfully created, reload the page
+      if (created) {
+        res.redirect(req.get('referer'));
+      }
+    })
+});
 
 // Export routes for server.js to use.
-module.exports = router
+module.exports = router;
