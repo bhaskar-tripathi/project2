@@ -16,7 +16,7 @@
     "operatorsAliases": false
   },
   "production": {
-    "url": {"ENV": "JAWSDB_URL"},
+    "use_env_varable": "JAWSDB_URL",
     "dialect": "mysql"
   }
 }
