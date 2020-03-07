@@ -25,6 +25,7 @@
 
             <div class='row mb-4'>
                 {{#each book}}
+<<<<<<< HEAD
                 <div class='col-sm-12 col-md-6 col-lg-4 py-2'>
                     <div class='card h-100'>
 
@@ -35,6 +36,17 @@
                             <button class='mybutton' DATA-ID={{addsql}}>ADD</button>
                             <button class='mybutton' DATA-ID={{openDetailPage}}>OPEN</button>
                         </div>
+=======
+                <div class='card' style=' height: 500px;'>
+                    <img src='{{volumeInfo.imageLinks.thumbnail}}' class='card-img-top' height='300px' alt='bookimage'>
+                    <div class='card-body'>
+                        <h5 class='card-title'>{{volumeInfo.title}}</h5>
+                        <p class='card-text'>{{volumeInfo.subtitle}}</p>
+                        <button class='btn btn-primary mybutton add-button' DATA-id={{id}}
+                            DATA-title="{{volumeInfo.title}}" DATA-author="{{volumeInfo.authors.[0]}}"
+                            DATA-isbn="{{volumeInfo.industryIdentifiers.[0].identifier}}">ADD</button>
+                        <button class='btn btn-primary mybutton open-button' DATA-id={{id}}>OPEN</button>
+>>>>>>> 5d8c9275c1327bb046ac579f598bb04fdc1bb8b8
                     </div>
                 </div>
                 {{/each}}
