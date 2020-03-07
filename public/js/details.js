@@ -27,8 +27,6 @@ $(document).ready(function () {
   });
   $('.add-button').on('click', function () {
     var volumeid = $(this).data('id');
-    var volinfo = $(this).data('volumeinfo');
-    console.log(volinfo);
     $.ajax('/api/book/' + volumeid, {
       type: 'POST',
       data: {
@@ -44,7 +42,21 @@ $(document).ready(function () {
   $('#viewBook-button').on('click', function () {
     var isbn = $(this).data('isbn');
     var viewer = new google.books.DefaultViewer(document.getElementById('viewerCanvas'));
-      viewer.load(`ISBN:${isbn}`);
-      $('#bookViewerModal').modal('show');
+    viewer.load(`ISBN:${isbn}`);
+    $('#bookViewerModal').modal('show');
+  });
+
+  $('#comupd-button').on('click', function () {
+    var volumeid = $(this).data('id');
+    $.ajax('/api/comments/' + volumeid, {
+      type: 'POST',
+      data: {
+        comment: 'Very Good Book',
+        name: 'My Name',
+        rating: '5'
+      }
+    }).then(function (response) {
+      console.log(response);
+    })
   });
 })
