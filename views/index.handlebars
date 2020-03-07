@@ -11,7 +11,7 @@
 
     <div class='container'>
         <div class='input-group mb-3' style=' margin-bottom: 20px;'>
-            <input type='text' class='form-control' placeholder='Type Book Title' aria-label='Recipient' s username'
+            <input type='text' class='form-control' placeholder='Type Book Title' aria-label='Recipient username'
                 aria-describedby='button-addon2' id='searchText'>
             <div class='input-group-append'>
                 <button class='btn btn-outline-secondary bg-primary text-white' type='button'
@@ -19,9 +19,27 @@
             </div>
         </div>
 
+<ul>
+            <div class='row mb-4'>
+                {{#each book}}
+                <div class='col-sm-12 col-md-6 col-lg-4 py-2'>
+                    <div class='card h-80'>
+                        <img src='{{volumeInfo.imageLinks.thumbnail}}' class='card-img-top' alt='bookimage'>
+                        <div class='card-body'>
+                            <h5 class='card-title'>{{volumeInfo.title}}</h5>
+                            <p class='card-text'>{{volumeInfo.subtitle}}</p>
+                            <button class='btn btn-primary mybutton add-button' DATA-id={{id}}
+                            DATA-title="{{volumeInfo.title}}" DATA-author="{{volumeInfo.authors.[0]}}"
+                            DATA-isbn="{{volumeInfo.industryIdentifiers.[0].identifier}}">ADD</button>
+                            <button class='btn btn-primary mybutton open-button' DATA-id={{id}}>OPEN</button>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </ul>
 
-
-        <ul>
+        {{!-- <ul>
 
             <div class='row mb-4'>
                 {{#each book}}
@@ -38,7 +56,7 @@
                 </div>
                 {{/each}}
 
-        </ul>
+        </ul> --}}
 
 
 
