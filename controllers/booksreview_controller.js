@@ -49,7 +49,7 @@ router.get('/api/search/:searchText', function (req, res) {
   var searchText = req.params.searchText;
   var queryUrl = `https://content.googleapis.com/books/v1/volumes?maxResults=6&q=${searchText}&key=${apiKey}`;
   axios.get(queryUrl).then(apiResponse => {
-    console.log(apiResponse.data.items[0].volumeInfo);
+    // console.log(apiResponse.data.items[0].volumeInfo);
     res.render('index', { book: apiResponse.data.items });
   }
   );
@@ -66,16 +66,18 @@ router.get('/api/comments/:volumeId', function (req, res) {
 // Get details page including comments
 router.get('/details/:volumeId', function (req, res) {
   volumeId = req.params.volumeId;
+  console.log(volumeId);
+  
   var queryUrl = `https://www.googleapis.com/books/v1/volumes/${volumeId}`;
   axios.get(queryUrl).then(apiResponse => {
     db.Reviews.findAll({ where: { bookid: volumeId } }).then(function (reviewData) {
       var hbsObject = {
-        leInfo: apiResponse.data,
+        id: apiResponse.data.id,
+        leInfo: apiResponse.data.volumeInfo,
         reviews: reviewData
       };
-      console.log(hbsObject);
-      // res.render('detail', hbsObject);
-      res.render('2ndPageBookTemplate', hbsObject)
+
+      res.render('2ndPageBookTemplate', hbsObject);
     });
   }
   );
@@ -97,12 +99,15 @@ router.post('/api/comments/:volumeId', function (req, res) {
 // Post book
 router.post('/api/book/:volumeId', function (req, res) {
   volumeId = req.params.volumeId;
+  console.log(req.body);
+  console.log(db.Book);
   // Update the new review comment in DB
-  db.Reviews.create({ bookid: volumeId, comment: req.body.comment, rname: req.body.name, rating: req.body.rating })
+  db.Book.create({ title: req.body.title, author: req.body.author, volumeid: volumeId, isbn: req.body.isbn })
     .then(([updbookreview, created]) => {
       // if successfully created, reload the page
       if (created) {
-        res.redirect(req.get('referer'));
+        // res.redirect(req.get('referer'));
+        res.send('Book Successfully Added to Library!!')
       }
     })
 });

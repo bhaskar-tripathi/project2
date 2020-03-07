@@ -1,22 +1,94 @@
-    <div class="card mb-3">
-      <div class="row no-gutters">
-        <div class="col-md-4">
-          <img src="{{leInfo.imageLinks.thumbnail}}" class="card-img" alt="Image">
-        </div>
-        <div class="col-md-8">
-          <div class="card-body">
-            <h4 class="card-title">Title: {{leInfo.Title}}</h4>
-            <h5>{{leInfo.subtitle}}</h5>
-            <p class="card-text">By: {{leInfo.authors}}</p>
-            <p class="card-text">Published in the year {{leInfo.publishedDate}} by: {{leInfo.publisher}}</p>
-            <p class="card-text">{{leInfo.description}}</p>
-            {{#each leInfo.industryIdentifiers}}
+{{!-- <div class="card mb-3">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="{{leInfo.imageLinks.thumbnail}}" class="card-img" alt="Image">
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h4 class="card-title">Title: {{leInfo.Title}}</h4>
+        <h5>{{leInfo.subtitle}}</h5>
+        <p class="card-text">By: {{leInfo.authors}}</p>
+        <p class="card-text">Published in the year {{leInfo.publishedDate}} by: {{leInfo.publisher}}</p>
+        <p class="card-text">{{leInfo.description}}</p>
+        {{#each leInfo.industryIdentifiers}}
             <!-- ask dennis how i can loop through each individual industry identifier because its an array -->
             <p class="card-text">Identifier type: {{leInfo.industryIdentifiers[].type}}: {{leInfo.industryIdentifiers.[]identifier</p>
                   {{/each}}
-              <h4 class="card-title">Book Length: {{leInfo.pageCount}} pages</h4>
-              <h4 class="card-title">Average Rating: {{leInfo.averageRating}}</h4>
+        <h4 class="card-title">Book Length: {{leInfo.pageCount}} pages</h4>
+        <h4 class="card-title">Average Rating: {{leInfo.averageRating}}</h4>
+      </div>
+    </div>
+  </div>
+</div> --}}
+
+<div class="container d-flex">
+  <div class="row  align-content-center">
+    <div class="card  border-secondary p-2 m-3 col-md-8 mr-auto">
+
+      <div class="row no-gutters">
+        <div class="col-md-4">
+          <img src="{{leInfo.imageLinks.thumbnail}}" class="card-img-top" style="width: 16rem;" alt="BookCover">
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <div class="card-body">
+              <h5 class="card-title">{{leInfo.title}}</h5>
+              <p class="card-text">{{leInfo.description}}</p>
+            </div>
+            <ul class="list-group list-group-flush">
+              {{#each leInfo.authors}}
+              <li class="list-group-item">By: {{this}}</li>
+              {{/each}}
+            </ul>
+            <div class="card-body">
+              <a href="#" class="card-link" id="viewBook-button"
+                DATA-isbn={{leInfo.industryIdentifiers.[0].identifier}}>Open
+                Book</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+      {{!-- <div class="card" style="width: 18rem;">
+        <img src="{{leInfo.imageLinks.thumbnail}}" class="card-img-top" style="width: 100%;height:20%;" alt="BookCover">
+        <div class="card-body">
+          <h5 class="card-title">{{leInfo.title}}</h5>
+          <p class="card-text">{{leInfo.description}}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          {{#each leInfo.authors}}
+          <li class="list-group-item">By: {{this}}</li>
+          {{/each}}
+        </ul>
+        <div class="card-body">
+          <a href="#" class="card-link" id="viewBook-button"
+            DATA-isbn={{leInfo.industryIdentifiers.[0].identifier}}>Open
+            Book</a>
+        </div> --}}
+
+    </div>
+  </div>
+</div>
+</div>
+
+
+<div class="modal fade" id="bookViewerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Mountain View</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+          <div class="row">
+            <div id="viewerCanvas" style="width: 100%; height: 600px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
